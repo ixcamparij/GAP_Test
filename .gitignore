@@ -3,3 +3,11 @@
 ################################################################################
 
 /Backend/Domain/bin/Debug/netstandard2.0/Domain.pdb
+/Backend/Domain/bin/Debug/netstandard2.0/Domain.dll
+/Backend/Domain/bin/Debug/netstandard2.0/Domain.deps.json
+/Backend/Domain/obj
+/Backend/WebAPI_Test_GAP/bin
+/Backend/WebAPI_Test_GAP/obj/Debug
+*.dtbcache
+/Backend/WebAPI_Test_GAP/.vs/WebAPI_Test_GAP
+/Backend/WebAPI_Test_GAP/packages
