@@ -2,11 +2,7 @@
 using System.Net;
 using System.Web.Http;
 using System.Threading.Tasks;
-using Domain_Data.Data;
-using NHibernate;
-using System.Linq;
-using System.Collections.Generic;
-using Domain_Data.Models;
+using Domain.Data;
 
 namespace WebAPI_Test_GAP.Controllers
 {
@@ -24,30 +20,32 @@ namespace WebAPI_Test_GAP.Controllers
             this.CustomerRepository = customerRepository;
         }
 
-        public async Task<IHttpActionResult> Get(int id)
+        public async Task<IHttpActionResult> Get(string id)
         {
-            Customer selectedCustomer = await this.CustomerRepository.GetCustomerById(id);   
-            if (selectedCustomer == null)
+            var selectedUser = await this.CustomerRepository.GetCustomerById(id);
+
+            if (selectedUser == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
             else
             {
-                return Ok(selectedCustomer);
+                return Ok(selectedUser);
             }
         }
 
         [Route("api/Customer/GetCustomers")]
         public async Task<IHttpActionResult> GetCustomers()
         {
-            var selectedCustomers = await this.CustomerRepository.GetCustomers();
-            if (selectedCustomers == null)
+            var selectedPolicies = await this.CustomerRepository.GetCustomers();
+
+            if (selectedPolicies == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
             else
             {
-                return Ok(selectedCustomers);
+                return Ok(selectedPolicies);
             }
         }
     }

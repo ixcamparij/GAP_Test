@@ -11,8 +11,8 @@ using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
 using HttpDeleteAttribute = System.Web.Http.HttpDeleteAttribute;
 using RouteAttribute = System.Web.Http.RouteAttribute;
 using System.Threading.Tasks;
-using Domain_Data.Data;
-using Domain_Data.Models;
+using Domain.Data;
+using Domain.Models;
 
 namespace WebAPI_Test_GAP.Controllers
 {
@@ -29,7 +29,7 @@ namespace WebAPI_Test_GAP.Controllers
 
             this.PolicyRepository = policyRepository;
         }
-        public async Task<IHttpActionResult> Get(int id)
+        public async Task<IHttpActionResult> Get(string id)
         {
             var selectedPolicy = await this.PolicyRepository.GetPolicyById(id);
 
@@ -87,7 +87,7 @@ namespace WebAPI_Test_GAP.Controllers
         }
 
         [HttpDelete]
-        public async Task<HttpResponseMessage> Delete(int id)
+        public async Task<HttpResponseMessage> Delete([FromBody] string id)
         {
             try
             {

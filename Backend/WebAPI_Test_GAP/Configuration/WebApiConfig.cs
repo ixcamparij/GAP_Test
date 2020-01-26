@@ -1,6 +1,5 @@
-﻿using Domain_Data;
-using Domain_Data.Data;
-using Domain_Data.Dependencies;
+﻿using Domain.Data;
+using Domain.Dependencies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +23,6 @@ namespace WebAPI_Test_GAP.Configuration
             container.RegisterType<IUserRepository, UserRepository>();
             container.RegisterType<ICustomerRepository, CustomerRepository>();
             container.RegisterType<IPolicyRepository, PolicyRepository>();
-            container.RegisterType<IDataBaseConnector, DataBaseConnector>();      
             config.DependencyResolver = new UnityResolver(container);
         }
     }
