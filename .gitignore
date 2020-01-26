@@ -11,3 +11,5 @@
 *.dtbcache
 /Backend/WebAPI_Test_GAP/.vs/WebAPI_Test_GAP
 /Backend/WebAPI_Test_GAP/packages
+/Backend/Domain_Data/bin/Debug
+/Backend/Domain_Data/obj/Debug

@@ -2,7 +2,7 @@
 using System.Net;
 using System.Web.Http;
 using System.Threading.Tasks;
-using Domain.Data;
+using Domain_Data.Data;
 
 namespace WebAPI_Test_GAP.Controllers
 {
@@ -20,7 +20,7 @@ namespace WebAPI_Test_GAP.Controllers
             this.UserRepository = userRepository;
         }
             
-        public async Task<IHttpActionResult> Get(string id)
+        public async Task<IHttpActionResult> Get(int id)
         {
             var selectedUser = await this.UserRepository.GetUserById(id);
 
