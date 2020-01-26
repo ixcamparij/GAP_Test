@@ -2,7 +2,9 @@
 using System.Net;
 using System.Web.Http;
 using System.Threading.Tasks;
-using Domain.Data;
+using Domain_Data.Data;
+using Domain_Data.Models;
+using System.Net.Http;
 
 namespace WebAPI_Test_GAP.Controllers
 {
@@ -20,9 +22,9 @@ namespace WebAPI_Test_GAP.Controllers
             this.UserRepository = userRepository;
         }
             
-        public async Task<IHttpActionResult> Get(string id)
+        public async Task<IHttpActionResult> Get(int id)
         {
-            var selectedUser = await this.UserRepository.GetUserById(id);
+            var selectedUser = await this.UserRepository.GetUserByIdAsync(id);
 
             if (selectedUser == null)
             {
@@ -31,6 +33,20 @@ namespace WebAPI_Test_GAP.Controllers
             else
             {
                 return Ok(selectedUser);
+            }
+        }
+
+        [HttpPost]
+        public async Task<HttpResponseMessage> Post([FromBody] User data)
+        {
+            try
+            {
+                var Auth = await this.UserRepository.GetUserAuthenticationAsync(data);
+                return Request.CreateResponse(statusCode: HttpStatusCode.OK, Auth);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(statusCode: HttpStatusCode.BadRequest, ex);
             }
         }
     }

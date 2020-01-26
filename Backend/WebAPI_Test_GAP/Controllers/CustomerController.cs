@@ -2,7 +2,7 @@
 using System.Net;
 using System.Web.Http;
 using System.Threading.Tasks;
-using Domain.Data;
+using Domain_Data.Data;
 
 namespace WebAPI_Test_GAP.Controllers
 {
@@ -20,9 +20,9 @@ namespace WebAPI_Test_GAP.Controllers
             this.CustomerRepository = customerRepository;
         }
 
-        public async Task<IHttpActionResult> Get(string id)
+        public async Task<IHttpActionResult> Get(int id)
         {
-            var selectedUser = await this.CustomerRepository.GetCustomerById(id);
+            var selectedUser = await this.CustomerRepository.GetCustomerByIdAsync(id);
 
             if (selectedUser == null)
             {
@@ -37,7 +37,7 @@ namespace WebAPI_Test_GAP.Controllers
         [Route("api/Customer/GetCustomers")]
         public async Task<IHttpActionResult> GetCustomers()
         {
-            var selectedPolicies = await this.CustomerRepository.GetCustomers();
+            var selectedPolicies = await this.CustomerRepository.GetCustomersAsync();
 
             if (selectedPolicies == null)
             {

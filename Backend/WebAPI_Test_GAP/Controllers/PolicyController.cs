@@ -11,8 +11,8 @@ using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
 using HttpDeleteAttribute = System.Web.Http.HttpDeleteAttribute;
 using RouteAttribute = System.Web.Http.RouteAttribute;
 using System.Threading.Tasks;
-using Domain.Data;
-using Domain.Models;
+using Domain_Data.Data;
+using Domain_Data.Models;
 
 namespace WebAPI_Test_GAP.Controllers
 {
@@ -29,9 +29,9 @@ namespace WebAPI_Test_GAP.Controllers
 
             this.PolicyRepository = policyRepository;
         }
-        public async Task<IHttpActionResult> Get(string id)
+        public async Task<IHttpActionResult> Get(int id)
         {
-            var selectedPolicy = await this.PolicyRepository.GetPolicyById(id);
+            var selectedPolicy = await this.PolicyRepository.GetPolicyByIdAsync(id);
 
             if (selectedPolicy == null)
             {
@@ -46,7 +46,7 @@ namespace WebAPI_Test_GAP.Controllers
         [Route("api/Policy/GetPolicies")]
         public async Task<IHttpActionResult> GetPolicies()
         {
-            var selectedPolicies = await this.PolicyRepository.GetPolicies();
+            var selectedPolicies = await this.PolicyRepository.GetPoliciesAsync();
 
             if (selectedPolicies == null)
             {
@@ -63,7 +63,7 @@ namespace WebAPI_Test_GAP.Controllers
         {
             try
             {
-                await this.PolicyRepository.CreatePolicy(data);
+                await this.PolicyRepository.CreatePolicyAsync(data);
                 return Request.CreateResponse(statusCode: HttpStatusCode.Created);
             }
             catch (Exception ex)
@@ -77,7 +77,7 @@ namespace WebAPI_Test_GAP.Controllers
         {
             try
             {
-                await this.PolicyRepository.UpdatePolicy(data);
+                await this.PolicyRepository.UpdatePolicyAsync(data);
                 return Request.CreateResponse(statusCode: HttpStatusCode.OK, data);
             }
             catch (Exception ex)
@@ -87,11 +87,11 @@ namespace WebAPI_Test_GAP.Controllers
         }
 
         [HttpDelete]
-        public async Task<HttpResponseMessage> Delete([FromBody] string id)
+        public async Task<HttpResponseMessage> Delete(int id)
         {
             try
             {
-                await this.PolicyRepository.DeletePolicy(id);
+                await this.PolicyRepository.DeletePolicyAsync(id);
                 return Request.CreateResponse(statusCode: HttpStatusCode.OK);
             }
             catch (Exception ex)
