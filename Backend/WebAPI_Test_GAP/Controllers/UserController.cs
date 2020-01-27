@@ -41,8 +41,12 @@ namespace WebAPI_Test_GAP.Controllers
         {
             try
             {
-                var Auth = await this.UserRepository.GetUserAuthenticationAsync(data);
-                return Request.CreateResponse(statusCode: HttpStatusCode.OK, Auth);
+                var UserUthorizedToLogin = await this.UserRepository.GetUserAuthenticationAsync(data);
+
+                // Create something which generates a token.
+                var token = (UserUthorizedToLogin) ? "D2B0228-4D0D-4C23-8B49-01A698857709" : string.Empty;
+
+                return Request.CreateResponse(statusCode: HttpStatusCode.OK, token);
             }
             catch (Exception ex)
             {

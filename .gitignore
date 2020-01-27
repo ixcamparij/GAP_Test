@@ -13,3 +13,7 @@
 /Backend/WebAPI_Test_GAP/packages
 /Backend/Domain_Data/bin/Debug
 /Backend/Domain_Data/obj/Debug
+/Frontend/MVCUI/bin
+/Frontend/MVCUI/obj/Debug
+/Frontend/MVCUI/packages
+/Frontend/MVCUI/.vs/MVCUI

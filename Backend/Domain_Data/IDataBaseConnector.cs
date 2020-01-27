@@ -11,8 +11,8 @@ namespace Domain_Data
     {
         Task<User> GetUserByIdAsync(int id);
 
-        Task<bool> GetUserAuthenticationAsync(User user);
-        
+        Task<IEnumerable<User>> GetUsersAsync();
+
         Task<Customer> GetCustomerByIdAsync(int id);
 
         Task<IEnumerable<Customer>> GetCustomersAsync();

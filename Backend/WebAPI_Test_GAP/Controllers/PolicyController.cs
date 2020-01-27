@@ -13,9 +13,11 @@ using RouteAttribute = System.Web.Http.RouteAttribute;
 using System.Threading.Tasks;
 using Domain_Data.Data;
 using Domain_Data.Models;
+using System.Web.Http.Cors;
 
 namespace WebAPI_Test_GAP.Controllers
 {
+    //[EnableCors(origins: "*", headers: "*", methods: "GET, POST, PUT, DELETE, OPTIONS")]
     public class PolicyController : ApiController
     {
         public IPolicyRepository PolicyRepository { get; set; }
@@ -44,7 +46,7 @@ namespace WebAPI_Test_GAP.Controllers
         }
 
         [Route("api/Policy/GetPolicies")]
-        public async Task<IHttpActionResult> GetPolicies()
+        public async Task<HttpResponseMessage> GetPolicies()
         {
             var selectedPolicies = await this.PolicyRepository.GetPoliciesAsync();
 
@@ -54,7 +56,8 @@ namespace WebAPI_Test_GAP.Controllers
             }
             else
             {
-                return Ok(selectedPolicies);
+                return Request.CreateResponse(statusCode: HttpStatusCode.Created, selectedPolicies, Configuration.Formatters.JsonFormatter);
+                //return Ok(selectedPolicies);
             }
         }
 
@@ -63,6 +66,12 @@ namespace WebAPI_Test_GAP.Controllers
         {
             try
             {
+                var isRiskHighResponse = this.validateRisk(data);
+                if (isRiskHighResponse != null) 
+                {
+                    return isRiskHighResponse;
+                }
+
                 await this.PolicyRepository.CreatePolicyAsync(data);
                 return Request.CreateResponse(statusCode: HttpStatusCode.Created);
             }
@@ -77,6 +86,12 @@ namespace WebAPI_Test_GAP.Controllers
         {
             try
             {
+                var isRiskHighResponse = this.validateRisk(data);
+                if (isRiskHighResponse != null)
+                {
+                    return isRiskHighResponse;
+                }
+
                 await this.PolicyRepository.UpdatePolicyAsync(data);
                 return Request.CreateResponse(statusCode: HttpStatusCode.OK, data);
             }
@@ -98,6 +113,17 @@ namespace WebAPI_Test_GAP.Controllers
             {
                 return Request.CreateErrorResponse(statusCode: HttpStatusCode.BadRequest, ex);
             }
+        }
+
+        private HttpResponseMessage validateRisk(Policy data) 
+        {
+            //Validates if Risk is high, we cannot assign more than 50 of coverage;
+            if (data.Risktype == RiskType.High && data.CoverageType > 50)
+            {
+                return Request.CreateResponse(statusCode: HttpStatusCode.Unauthorized, "If Risk is high, we cannot assign more than 50 of coverage, Check the data out and try again.");
+            }
+
+            return null;
         }
     }
 }

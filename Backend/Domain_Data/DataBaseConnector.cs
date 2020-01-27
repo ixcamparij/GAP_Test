@@ -24,18 +24,15 @@ namespace Domain_Data
             return user;
         }
 
-        public async Task<bool> GetUserAuthenticationAsync(User user)
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
+            IEnumerable<User> users = null;
             using (ISession session = NHibernateSession.OpenSession())
             {
-                var response = await session.Query<User>().Where(b => string.Equals(b.UserId, user.UserId, StringComparison.OrdinalIgnoreCase)).ToListAsync();
-                if (response.Count >=1  && string.Equals(response.FirstOrDefault().Password, user.Password, StringComparison.Ordinal)) 
-                {
-                    return true;
-                }
+                users = await session.Query<User>().ToListAsync();
             }
-            
-            return false;
+
+            return users;
         }
 
         #endregion

@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="~/bundles/site" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        GetPolicies();
+
+        $( "#createModal" ).on('shown.bs.modal', function(){
+            $("#createPolicy").click(function ()
+            {
+                var createModal = $("#createModal");
+                CreatePolicy(createModal);
+            });
+        });
+
+        $("#updateModal").on('shown.bs.modal', function ()
+        {
+            $("#editPolicy").click(function ()
+            {
+                var updateModal = $("#updateModal");
+                UpdatePolicy(updateModal);
+            });
+        });
+
+        $("#DeleteModal").on('shown.bs.modal', function ()
+        {
+            $("#deletePolicy").click(function ()
+            {
+                var idToRemove = $("#DeleteModal").find(".inputGetId").val();
+                DeletePolicy(idToRemove);
+            });
+        });
+    });
+
+</script>
+    <div class="container">
+        @Html.Partial("_policyTable")
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" style="text-align:center;">
+            <h2>Create Policy</h2>
+            <button id="openCreatePolicyModal" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#createModal">Create</button>
+        </div>
+        @*<div class="col-md-4" style="text-align:center;">
+            <h2>Edit policy</h2>
+            <button id="openUpdatePolicyModal" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#updateModal">Update</button>
+        </div>
+        <div class="col-md-4" style="text-align:center;">
+            <h2>Delete Policy</h2>
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#DeleteModal">Delete</button>
+        </div>*@
+    </div>
+
+    <div class="container">
+        <!-- Create Modal -->
+        <div class="modal fade" id="createModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Create</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        @Html.Partial("_policyModalBody")
+
+                    </div>
+                    <div class="modal-footer">
+                        <button id="createPolicy" class="btn btn-default" type="button">Create</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- update Modal -->
+        <div class="modal fade" id="updateModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Update</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group mb-3" style="display:none;">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="GetId">Id:</span>
+                                <input type="text" class="form-control inputGetId" placeholder="" aria-label="Id" aria-describedby="GetId">
+                            </div>
+                        </div>
+                        @Html.Partial("_policyModalBody")
+                    </div>
+                    <div class="modal-footer">
+                        <button id="editPolicy" class="btn btn-default" type="button">Update</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Delete Modal -->
+        <div class="modal fade" id="DeleteModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Delete</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="GetId">Are you sure to delete this policy?</span>
+                            </div>
+                            <input type="text" class="form-control inputGetId" placeholder="" aria-label="Id" aria-describedby="GetId"  style="display:none;">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button id="deletePolicy" class="btn btn-default" type="button">Delete</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
