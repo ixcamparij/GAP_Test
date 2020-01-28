@@ -84,6 +84,17 @@ namespace Domain_Data
             return policies;
         }
 
+        public async Task<IEnumerable<Assign>> GetAssignedPoliciesAsync()
+        {
+            IEnumerable<Assign> policies = null;
+            using (ISession session = NHibernateSession.OpenSession())
+            {
+                policies = await session.Query<Assign>().ToListAsync();
+            }
+
+            return policies;
+        }
+
         public async Task CreatePolicyAsync(Policy policy)
         {
             using (ISession session = NHibernateSession.OpenSession())
@@ -121,6 +132,44 @@ namespace Domain_Data
                 }
             }
         }
+
+        public async Task<Assign> GetAssignedPolicyByIdAsync(int id)
+        {
+            Assign policy = null;
+            using (ISession session = NHibernateSession.OpenSession())
+            {
+                policy = await session.GetAsync<Assign>(id);
+            }
+
+            return policy;
+        }
+
+        public async Task CreateAssignedPoliciesAsync(Assign policy)
+        {
+            using (ISession session = NHibernateSession.OpenSession())
+            {
+                using (ITransaction transaction = session.BeginTransaction())
+                {
+                    await session.SaveAsync(policy);
+                    await transaction.CommitAsync();
+                }
+            }
+        }
+
+        public async Task DeleteAssignedPolicyAsync(int id)
+        {
+            using (ISession session = NHibernateSession.OpenSession())
+            {
+                Assign policy = await this.GetAssignedPolicyByIdAsync(id);
+
+                using (ITransaction trans = session.BeginTransaction())
+                {
+                    await session.DeleteAsync(policy);
+                    await trans.CommitAsync();
+                }
+            }
+        }
+
         #endregion
     }
 }

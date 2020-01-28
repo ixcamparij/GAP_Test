@@ -224,6 +224,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Configuration\WebApiConfig.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\PolicyAssignmentController.cs" />
     <Compile Include="Controllers\PolicyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">

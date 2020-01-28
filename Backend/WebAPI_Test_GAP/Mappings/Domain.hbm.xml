@@ -34,5 +34,16 @@
     <property name="UserId"  />
     <property name="Password"  />
   </class>
+
+  <class name="Assign" table="Policies_Assigned" dynamic-update="true" >
+    <cache usage="read-write"/>
+    <id name="Id" column="Id" type="int">
+      <generator class="native" />
+    </id>
+
+    <property name="CustomerId"  />
+    <property name="PolicyId"  />
+    <property name="Status"  />
+  </class>
 </hibernate-mapping>
 

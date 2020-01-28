@@ -10,47 +10,108 @@
 <script src="~/bundles/site" type="text/javascript"></script>
 
 <h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
-
 <p>Use this area to assign policies.</p>
 
 <script type="text/javascript">
     $(document).ready(function () {
 
-        GetPolicies();
-        GetCustomers();
+        GetPolicies("assign");
+        GetAssignedPolicies();
+        //LoginIn();
 
-        LoginIn();
+
+
+        $("#assignPolicy").click(function () {
+            var policyId = $("#assignModal").find(".inputToAssign").val();
+            var customerId = $("#assignModal").find(".inputGeCustomerId").children("option:selected").val(); 
+            CreateAssignedPolicy(customerId, policyId);
+        });
+
+
+        $("#deallocatePolicy").click(function ()
+        {
+            var id = $("#deallocateModal").find(".inputGetId").val();
+            DeallocatePolicy(id);
+        });
     });
 </script>
 
 <div class="container">
-    <h2>Policies</h2>
     @Html.Partial("_policyTable")
 
     <br>
     <br>
 
-    <h2>Customers</h2>
-    <table id="customerTable" class="table table-striped">
+    <h2>Assigned policies</h2>
+    <table id="assignedPoliciesTable" class="table table-striped">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Customer Id</th>
+                <th>Customer Name</th>
+                <th>Policy Id</th>
+                <th>Policy Name</th>
             </tr>
         </thead>
         <tbody></tbody>
     </table>
 </div>
 
-<div class="row">
-    <div class="col-md-6" style="text-align:center;">
-        <h2>Assign Policy</h2>
+<!-- Assign Modal -->
+<div class="modal fade" id="assignModal" role="dialog">
+    <div class="modal-dialog">
 
-        <input id="assignPolicy" type="button" value="Create" onclick="AssignPolicy();">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Delete</h4>
+            </div>
+            <div class="modal-body">
+
+                <input type="text" class="form-control inputToAssign" placeholder="" aria-label="Id" aria-describedby="Assign" style="display:none;">
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="GetCustomerid">Select customer:</span>
+                    </div>
+                    <select class="inputGeCustomerId"></select>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="assignPolicy" class="btn btn-default" type="button">Assign</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
     </div>
-    <div class="col-md-6" style="text-align:center;">
-        <h2>Deallocate policy</h2>
-        <input id="deallocatePolicy" type="button" value="Deallocate" onclick="DeallocatePolicy();">
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deallocateModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Delete</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="GetId">Are you sure to delete this assigned policy?</span>
+                    </div>
+                    <input type="text" class="form-control inputGetId" placeholder="" aria-label="Id" aria-describedby="GetId" style="display:none;">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button id="deallocatePolicy" class="btn btn-default" type="button">Deallocate</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
     </div>
 </div>

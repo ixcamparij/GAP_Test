@@ -26,5 +26,13 @@ namespace Domain_Data
         Task UpdatePolicyAsync(Policy policy);
 
         Task DeletePolicyAsync(int id);
+
+        Task<Assign> GetAssignedPolicyByIdAsync(int id);
+
+        Task<IEnumerable<Assign>> GetAssignedPoliciesAsync();
+
+        Task CreateAssignedPoliciesAsync(Assign policy);
+
+        Task DeleteAssignedPolicyAsync(int id);
     }
 }

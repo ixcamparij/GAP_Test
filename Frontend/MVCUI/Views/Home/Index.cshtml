@@ -12,32 +12,24 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        GetPolicies();
-
-        $( "#createModal" ).on('shown.bs.modal', function(){
-            $("#createPolicy").click(function ()
-            {
-                var createModal = $("#createModal");
-                CreatePolicy(createModal);
-            });
+        GetPolicies("home");
+       
+        $("#createPolicy").click(function ()
+        {
+            var createModal = $("#createModal");
+            CreatePolicy(createModal);
+        });
+     
+        $("#editPolicy").click(function ()
+        {
+            var updateModal = $("#updateModal");
+            UpdatePolicy(updateModal);
         });
 
-        $("#updateModal").on('shown.bs.modal', function ()
+        $("#deletePolicy").click(function ()
         {
-            $("#editPolicy").click(function ()
-            {
-                var updateModal = $("#updateModal");
-                UpdatePolicy(updateModal);
-            });
-        });
-
-        $("#DeleteModal").on('shown.bs.modal', function ()
-        {
-            $("#deletePolicy").click(function ()
-            {
-                var idToRemove = $("#DeleteModal").find(".inputGetId").val();
-                DeletePolicy(idToRemove);
-            });
+            var idToRemove = $("#DeleteModal").find(".inputGetId").val();
+            DeletePolicy(idToRemove);
         });
     });
 
@@ -51,14 +43,6 @@
             <h2>Create Policy</h2>
             <button id="openCreatePolicyModal" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#createModal">Create</button>
         </div>
-        @*<div class="col-md-4" style="text-align:center;">
-            <h2>Edit policy</h2>
-            <button id="openUpdatePolicyModal" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#updateModal">Update</button>
-        </div>
-        <div class="col-md-4" style="text-align:center;">
-            <h2>Delete Policy</h2>
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#DeleteModal">Delete</button>
-        </div>*@
     </div>
 
     <div class="container">

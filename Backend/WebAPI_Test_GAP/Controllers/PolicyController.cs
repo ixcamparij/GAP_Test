@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Web;
-using System.Web.Mvc;
 using System.Web.Http;
 using System.Net.Http;
 using HttpPutAttribute = System.Web.Http.HttpPutAttribute;
@@ -13,11 +9,9 @@ using RouteAttribute = System.Web.Http.RouteAttribute;
 using System.Threading.Tasks;
 using Domain_Data.Data;
 using Domain_Data.Models;
-using System.Web.Http.Cors;
 
 namespace WebAPI_Test_GAP.Controllers
 {
-    //[EnableCors(origins: "*", headers: "*", methods: "GET, POST, PUT, DELETE, OPTIONS")]
     public class PolicyController : ApiController
     {
         public IPolicyRepository PolicyRepository { get; set; }
@@ -31,6 +25,7 @@ namespace WebAPI_Test_GAP.Controllers
 
             this.PolicyRepository = policyRepository;
         }
+
         public async Task<IHttpActionResult> Get(int id)
         {
             var selectedPolicy = await this.PolicyRepository.GetPolicyByIdAsync(id);
@@ -57,7 +52,6 @@ namespace WebAPI_Test_GAP.Controllers
             else
             {
                 return Request.CreateResponse(statusCode: HttpStatusCode.Created, selectedPolicies, Configuration.Formatters.JsonFormatter);
-                //return Ok(selectedPolicies);
             }
         }
 
@@ -66,7 +60,7 @@ namespace WebAPI_Test_GAP.Controllers
         {
             try
             {
-                var isRiskHighResponse = this.validateRisk(data);
+                var isRiskHighResponse = this.ValidateRisk(data);
                 if (isRiskHighResponse != null) 
                 {
                     return isRiskHighResponse;
@@ -86,7 +80,7 @@ namespace WebAPI_Test_GAP.Controllers
         {
             try
             {
-                var isRiskHighResponse = this.validateRisk(data);
+                var isRiskHighResponse = this.ValidateRisk(data);
                 if (isRiskHighResponse != null)
                 {
                     return isRiskHighResponse;
@@ -115,7 +109,7 @@ namespace WebAPI_Test_GAP.Controllers
             }
         }
 
-        private HttpResponseMessage validateRisk(Policy data) 
+        private HttpResponseMessage ValidateRisk(Policy data) 
         {
             //Validates if Risk is high, we cannot assign more than 50 of coverage;
             if (data.Risktype == RiskType.High && data.CoverageType > 50)

@@ -1,5 +1,5 @@
 ﻿
-function GetPolicies()
+function GetPolicies(pageName)
 {
     $.ajax({
         type: "GET",
@@ -10,19 +10,38 @@ function GetPolicies()
         success: function (data) {
 
             $.each(data, function (i, item) {
+
+                var riskType = "";
+                if (item.Risktype == 0)
+                    riskType = "Low";
+                else if (item.Risktype == 1)
+                    riskType = "Medium";
+                else if (item.Risktype == 2)
+                    riskType = "Medium-High";
+                else if (item.Risktype == 3)
+                    riskType = "High";
+
                 var rows = "<tr>" +
-                    "<td id='Id'>" + item.Id + "</td>" +
+                    "<td id='Id' style='display:none;'>" + item.Id + "</td>" +
                     "<td id='Name'>" + item.Name + "</td>" +
                     "<td id='Description'>" + item.Description + "</td>" +
-                    "<td id='Coverage Type'>" + item.CoverageType + "</td>" +
-                    "<td id='Effective Date'>" + Date(item.EffectiveDate,
-                        "dd-MM-yyyy") + "</td>" +
+                    "<td id='CoverageType'>" + item.CoverageType + "</td>" +
+                    "<td id='EffectiveDate'>" + item.EffectiveDate + "</td>" +
                     "<td id='CoveragePeriod'>" + item.CoveragePeriod + "</td>" +
                     "<td id='Price'>" + item.Price + "</td>" +
-                    "<td id='Risktype'>" + item.Risktype + "</td>" +
-                    "<td><a class='editCurrent' href='#'>Edit</a></td>" +
-                    "<td><a class='deleteCurrent' href='#'>Delete</a></td>" +
-                    "</tr>";
+                    "<td id='Risktype'>" + riskType + "</td>";
+
+                    if (pageName == "home")
+                    {
+                        rows += "<td><a class='editCurrent' href='#'>Edit</a></td>" +
+                            "<td><a class='deleteCurrent' href='#'>Delete</a></td>";
+                    }
+                    else if (pageName == "assign")
+                    {
+                        rows += "<td><a class='assignCurrent' href='#'>Assign</a></td>";
+                    }
+                   
+                    rows += "</tr>";
                 $('#policyTable').append(rows);
 
             }); //End of foreach Loop
@@ -30,6 +49,7 @@ function GetPolicies()
 
             SetEditPolicyEvent();
             SetDeletePolicyEvent();
+            SetAssignPolicyEvent();
 
         }, //End of AJAX Success function
 
@@ -68,7 +88,7 @@ function GetPolicyById(policyId, callbackFunction)
 }
 
 function CreatePolicy(createModal) {
-    //alert(createModal.find(".inputGetEffectiveDate").val());
+    var selectedDate = createModal.find(".inputGetEffectiveDate").val();
 
     $.ajax({
         type: "POST",
@@ -76,7 +96,7 @@ function CreatePolicy(createModal) {
         contentType: "application/json; charset=utf-8",
         async: true,
         crossDomain: true,
-        data: '{"Name": "' + createModal.find(".inputGetName").val() + '", "Description": "' + createModal.find(".inputGetDescription").val() + '","CoverageType": ' + createModal.find(".inputGetCoverage").val() + ',"EffectiveDate": "2020-02-26T00:06:42.9062617-06:00","CoveragePeriod": ' + createModal.find(".inputGetCoveragePeriod").val() + ', "Price": ' + createModal.find(".inputGetPrice").val() + ',"Risktype": ' + createModal.find(".inputGetRisktype").children("option:selected").val() + '}',
+        data: '{"Name": "' + createModal.find(".inputGetName").val() + '", "Description": "' + createModal.find(".inputGetDescription").val() + '","CoverageType": ' + createModal.find(".inputGetCoverage").val() + ',"EffectiveDate": "' + selectedDate +'","CoveragePeriod": ' + createModal.find(".inputGetCoveragePeriod").val() + ', "Price": ' + createModal.find(".inputGetPrice").val() + ',"Risktype": ' + createModal.find(".inputGetRisktype").children("option:selected").val() + '}',
         success: function (data) {
             alert("Policy Created!!");
             location.reload();
@@ -154,7 +174,7 @@ function DeletePolicy(idToRemove)
     });
 }
 
-function GetCustomers() {
+function GetCustomers(callbackFunction) {
     $.ajax({
         type: "GET",
         url: "https://localhost:44394/api/customer/getcustomers",
@@ -163,14 +183,7 @@ function GetCustomers() {
         async: true,
         success: function (data) {
 
-            $.each(data, function (i, item) {
-                var rows = "<tr>" +
-                    "<td id='Id'>" + item.Id + "</td>" +
-                    "<td id='Name'>" + item.Name + "</td>" +
-                    "</tr>";
-                $('#customerTable').append(rows);
-
-            }); //End of foreach Loop
+            callbackFunction.call(this, data);
           
         }, //End of AJAX Success function
 
@@ -240,5 +253,121 @@ function SetDeletePolicyEvent()
         var deleteModal = $('#DeleteModal');
         deleteModal.find(".inputGetId").val(currentRowId);
         deleteModal.modal('show');
+    });
+}
+
+function SetAssignPolicyEvent() {
+    // set the event to open update modal
+    $('#policyTable').find(".assignCurrent").click(function () {
+        var currentRowId = $(this).parent().parent().find("#Id").text();
+        var assignModal = $('#assignModal');
+        var inputGeCustomerId = $("#assignModal").find(".inputGeCustomerId");
+
+        GetCustomers(function (data) {
+            $.each(data, function (i, item) {
+
+                inputGeCustomerId.append($('<option>', { value: item.Id, text: item.Name }));
+
+            }); //End of foreach Loop
+            
+        });
+
+        assignModal.find(".inputToAssign").val(currentRowId);
+        assignModal.modal('show');
+    });
+}
+
+function SetDeallocatePolicyEvent()
+{
+    var deallocateModal = $('#deallocateModal');
+    $('#assignedPoliciesTable').find(".deallocateCurrent").click(function ()
+    {
+        var currentRowId = $(this).parent().parent().find("#Id").text();
+        deallocateModal.find(".inputGetId").val(currentRowId);
+        deallocateModal.modal('show');
+
+    });
+    
+}
+
+function GetAssignedPolicies()
+{
+      $.ajax({
+            type: "GET",
+            url: "https://localhost:44394/api/PolicyAssignment/GetAssignedPolicies",
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            crossDomain: true,
+            success: function (data) {
+                $.each(data, function (i, item)
+                {
+                    var rows = "<tr>" +
+                        "<td id='Id'>" + item.Id + "</td>" +
+                        "<td id='CustomerId'>" + item.CustomerId + "</td>" +
+                        "<td id='CustomerName'>" + item.CustomerName + "</td>" +
+                        "<td id='PolicyId'>" + item.PolicyId + "</td>" +
+                        "<td id='PolicyName'>" + item.PolicyName + "</td>" +
+                        "<td><a class='deallocateCurrent' href='#'>Deallocate</a></td>" +
+                        "</tr>";
+                    $('#assignedPoliciesTable').append(rows);
+                });
+                SetDeallocatePolicyEvent();
+
+            }, //End of AJAX Success function
+
+            failure: function (data) {
+                alert(JSON.stringify(data));
+            }, //End of AJAX failure function
+            error: function (data) {
+                alert(JSON.stringify(data));
+            } //End of AJAX error function
+
+        });
+}
+
+function CreateAssignedPolicy(customerId, policyId)
+{
+    $.ajax({
+        type: "POST",
+        url: "https://localhost:44394/api/PolicyAssignment/",
+        contentType: "application/json; charset=utf-8",
+        async: true,
+        crossDomain: true,
+        data: '{"CustomerId":' + customerId + ',"PolicyId":' + policyId + ',"Status":true}',
+        success: function (data) {
+            alert("Policy Assigned!!");
+            location.reload();
+        }, //End of AJAX Success function
+
+        failure: function (data) {
+            alert(JSON.stringify(data));
+        }, //End of AJAX failure function
+        error: function (data)
+        {
+            alert(JSON.stringify(data));
+        } //End of AJAX error function
+
+    });
+}
+
+function DeallocatePolicy(id) {
+    $.ajax({
+        type: "DELETE",
+        url: "https://localhost:44394/api/PolicyAssignment/"+id,
+        contentType: "application/json; charset=utf-8",
+        async: true,
+        crossDomain: true,
+        success: function (data) {
+            alert("Policy Deallocated!!");
+            location.reload();
+        }, //End of AJAX Success function
+
+        failure: function (data) {
+            alert(JSON.stringify(data));
+        }, //End of AJAX failure function
+        error: function (data) {
+            alert(JSON.stringify(data));
+        } //End of AJAX error function
+
     });
 }

@@ -111,12 +111,15 @@
     <Compile Include="DataBaseConnector.cs" />
     <Compile Include="Data\CustomerRepository.cs" />
     <Compile Include="Data\ICustomerRepository.cs" />
+    <Compile Include="Data\IPolicyAssignmentRepository.cs" />
     <Compile Include="Data\IPolicyRepository.cs" />
     <Compile Include="Data\IUserRepository.cs" />
+    <Compile Include="Data\PolicyAssignmentRepository.cs" />
     <Compile Include="Data\PolicyRepository.cs" />
     <Compile Include="Data\UserRepository.cs" />
     <Compile Include="Dependencies\UnityResolver.cs" />
     <Compile Include="IDataBaseConnector.cs" />
+    <Compile Include="Models\Assign.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\NHibernateSession.cs" />
     <Compile Include="Models\Person.cs" />

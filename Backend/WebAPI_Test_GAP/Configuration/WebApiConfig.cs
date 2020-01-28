@@ -28,7 +28,9 @@ namespace WebAPI_Test_GAP.Configuration
             container.RegisterType<IUserRepository, UserRepository>();
             container.RegisterType<ICustomerRepository, CustomerRepository>();
             container.RegisterType<IPolicyRepository, PolicyRepository>();
+            container.RegisterType<IPolicyAssignmentRepository, PolicyAssignmentRepository>();
             container.RegisterType<IDataBaseConnector, DataBaseConnector>();
+            
             config.DependencyResolver = new UnityResolver(container);
         }
     }
