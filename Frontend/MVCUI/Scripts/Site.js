@@ -1,9 +1,14 @@
 ﻿
+
+
 function GetPolicies(pageName)
 {
+    var APIDomain = $("#APIDomain").text();
+    var URL = APIDomain.trim() + "api/policy/getpolicies";
+
     $.ajax({
         type: "GET",
-        url: "https://localhost:44394/api/policy/getpolicies",
+        url: URL,
         contentType: "application/json; charset=utf-8",
         async: true,
         crossDomain: true,
@@ -65,9 +70,11 @@ function GetPolicies(pageName)
 
 function GetPolicyById(policyId, callbackFunction)
 {
+    var APIDomain = $("#APIDomain").text();
+    var URL = APIDomain.trim() + "api/policy/";
     $.ajax({
         type: "GET",
-        url: "https://localhost:44394/api/policy/" + policyId,
+        url: URL + policyId,
         contentType: "application/json; charset=utf-8",
         async: true,
         crossDomain: true,
@@ -89,10 +96,12 @@ function GetPolicyById(policyId, callbackFunction)
 
 function CreatePolicy(createModal) {
     var selectedDate = createModal.find(".inputGetEffectiveDate").val();
+    var APIDomain = $("#APIDomain").text();
+    var URL = APIDomain.trim() + "api/policy/";
 
     $.ajax({
         type: "POST",
-        url: "https://localhost:44394/api/policy/",
+        url: URL,
         contentType: "application/json; charset=utf-8",
         async: true,
         crossDomain: true,
@@ -103,7 +112,7 @@ function CreatePolicy(createModal) {
         }, //End of AJAX Success function
 
         failure: function (data) {
-            alert(JSON.stringify(data));
+            alert("All fields are required, check the data and try again.");
         }, //End of AJAX failure function
         error: function (data) {
             if (data.status == 401 && data.statusText == "Unauthorized") {
@@ -111,16 +120,19 @@ function CreatePolicy(createModal) {
                 return;
             }
 
-            alert(JSON.stringify(data));
+            alert("All fields are required, check the data and try again.");
         } //End of AJAX error function
 
     });
 }
 
 function UpdatePolicy(createModal) {
+    var APIDomain = $("#APIDomain").text();
+    var URL = APIDomain.trim() + "api/policy/";
+
     $.ajax({
         type: "PUT",
-        url: "https://localhost:44394/api/policy/",
+        url: URL,
         contentType: "application/json; charset=utf-8",
         async: true,
         crossDomain: true,
@@ -135,7 +147,7 @@ function UpdatePolicy(createModal) {
         }, //End of AJAX Success function
 
         failure: function (data) {
-            alert(JSON.stringify(data));
+            alert("All fields are required, check the data and try again.");
         }, //End of AJAX failure function
         error: function (data) {
             if (data.status == 401 && data.statusText == "Unauthorized") {
@@ -143,7 +155,7 @@ function UpdatePolicy(createModal) {
                 return;
             }
 
-            alert(JSON.stringify(data));
+            alert("All fields are required, check the data and try again.");
         } //End of AJAX error function
 
     });
@@ -151,9 +163,12 @@ function UpdatePolicy(createModal) {
 
 function DeletePolicy(idToRemove)
 {
+    var APIDomain = $("#APIDomain").text();
+    var URL = APIDomain.trim() + "api/policy/";
+
     $.ajax({
         type: "DELETE",
-        url: "https://localhost:44394/api/policy/" + idToRemove,
+        url: URL + idToRemove,
         contentType: "application/json; charset=utf-8",
         async: true,
         crossDomain: true,
@@ -165,19 +180,24 @@ function DeletePolicy(idToRemove)
         }, //End of AJAX Success function
 
         failure: function (data) {
-            alert(JSON.stringify(data));
+            alert("This action is not availabe at this moment, check the data and try again.");
         }, //End of AJAX failure function
         error: function (data) {
-            alert(JSON.stringify(data));
+            alert("This action is not availabe at this moment, check the data and try again.");
+            console.log(data);
         } //End of AJAX error function
 
     });
 }
 
-function GetCustomers(callbackFunction) {
+function GetCustomers(callbackFunction)
+{
+    var APIDomain = $("#APIDomain").text();
+    var URL = APIDomain.trim() + "api/customer/getcustomers";
+
     $.ajax({
         type: "GET",
-        url: "https://localhost:44394/api/customer/getcustomers",
+        url: URL,
         contentType: "application/json; charset=utf-8",
         crossDomain: true,
         async: true,
@@ -197,10 +217,14 @@ function GetCustomers(callbackFunction) {
     });
 }
 
-function LoginIn() {
+function LoginIn()
+{
+    var APIDomain = $("#APIDomain").text();
+    var URL = APIDomain.trim() + "api/user/";
+
     $.ajax({
         type: "POST",
-        url: "https://localhost:44394/api/user/",
+        url: URL,
         contentType: "application/json; charset=utf-8",
         async: true,
         crossDomain: true,
@@ -292,9 +316,12 @@ function SetDeallocatePolicyEvent()
 
 function GetAssignedPolicies()
 {
+    var APIDomain = $("#APIDomain").text();
+    var URL = APIDomain.trim() + "api/PolicyAssignment/GetAssignedPolicies";
+
       $.ajax({
             type: "GET",
-            url: "https://localhost:44394/api/PolicyAssignment/GetAssignedPolicies",
+            url: URL,
             contentType: "application/json; charset=utf-8",
             async: true,
             crossDomain: true,
@@ -327,9 +354,12 @@ function GetAssignedPolicies()
 
 function CreateAssignedPolicy(customerId, policyId)
 {
+    var APIDomain = $("#APIDomain").text();
+    var URL = APIDomain.trim() + "api/PolicyAssignment/";
+
     $.ajax({
         type: "POST",
-        url: "https://localhost:44394/api/PolicyAssignment/",
+        url: URL,
         contentType: "application/json; charset=utf-8",
         async: true,
         crossDomain: true,
@@ -350,10 +380,14 @@ function CreateAssignedPolicy(customerId, policyId)
     });
 }
 
-function DeallocatePolicy(id) {
+function DeallocatePolicy(id)
+{
+    var APIDomain = $("#APIDomain").text();
+    var URL = APIDomain.trim() + "api/PolicyAssignment/";
+
     $.ajax({
         type: "DELETE",
-        url: "https://localhost:44394/api/PolicyAssignment/"+id,
+        url: URL+id,
         contentType: "application/json; charset=utf-8",
         async: true,
         crossDomain: true,

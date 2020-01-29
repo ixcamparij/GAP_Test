@@ -14,16 +14,23 @@
 
         GetPolicies("home");
        
-        $("#createPolicy").click(function ()
-        {
+        $("#createPolicy").click(function () {
             var createModal = $("#createModal");
-            CreatePolicy(createModal);
+
+           if(validateFields(createModal))
+            {
+                 CreatePolicy(createModal);
+            }           
         });
      
         $("#editPolicy").click(function ()
         {
             var updateModal = $("#updateModal");
-            UpdatePolicy(updateModal);
+            
+            if(validateFields(updateModal))
+            {
+                UpdatePolicy(updateModal);
+            }  
         });
 
         $("#deletePolicy").click(function ()
@@ -33,10 +40,37 @@
         });
     });
 
+    function validateFields(modal)
+    {
+        // Validates input coverage must be ]0, 100].
+            var Coverage = modal.find(".inputGetCoverage").val();
+            var CoveragePeriod = modal.find(".inputGetCoveragePeriod").val();
+            var Price = modal.find(".inputGetPrice").val();
+            if (Coverage <= 0 || Coverage > 100 )
+            {
+                alert("Coverage must be between 1 and 100");
+                return false;
+            }
+            else if (CoveragePeriod <= 0 )
+            {
+                alert("Coverage Period must be greather than 0");
+                return false;
+            }
+            else if (Price <= 0 )
+            {
+                alert("Price must be greather than 0");
+                return false;
+            }
+
+        return true;
+    }
+
 </script>
     <div class="container">
         @Html.Partial("_policyTable")
     </div>
+
+    <div id="APIDomain" style="display:none;">@ViewBag.APIDomain </div>
 
     <div class="row">
         <div class="col-md-12" style="text-align:center;">

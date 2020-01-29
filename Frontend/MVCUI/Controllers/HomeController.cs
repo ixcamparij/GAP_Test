@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,7 +11,8 @@ namespace MVCUI.Controllers
     {
         public ActionResult Index()
         {
-
+            string APIDomain = ConfigurationManager.AppSettings["APIDomain"];
+            ViewBag.APIDomain = APIDomain;
 
             return View();
         }
@@ -24,6 +26,8 @@ namespace MVCUI.Controllers
 
         public ActionResult AssignPolicy()
         {
+            string APIDomain = ConfigurationManager.AppSettings["APIDomain"];
+            ViewBag.APIDomain = APIDomain;
             ViewBag.Message = "This section is for assign a policies to customers";
 
             return View();
